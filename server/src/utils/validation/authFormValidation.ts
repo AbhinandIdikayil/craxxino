@@ -11,7 +11,8 @@ export const authFormValidator = Joi.object({
         }),
     password: Joi.string()
         .min(6)
-        .pattern(/^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$/, 'alphanumeric with one uppercase and one number')
+        .regex(/[A-Z]/, 'must contain one uppercase letter')
+        .regex(/[0-9]/, 'must contain one number')
         .required()
         .messages({
             'string.min': 'Password must be at least 6 characters long.',
