@@ -8,12 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store/srote';
 import { setCurrentStep, setPersonalInfo } from '../../../store/userSlice';
 import { format } from "date-fns";
+import { useState } from 'react';
 
 
 function PersonalnfoForm() {
   const options = ['Mr', 'Mrs'];
+  const [showDate, setShowDate] = useState<string | null>(null)
   const state = useSelector((state: RootState) => state.user)
-  const { control, register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<PersonalInfoFormData>({
+  const { control, register, handleSubmit, setValue,formState: { errors, isSubmitting } } = useForm<PersonalInfoFormData>({
     resolver: zodResolver(personalInfoSchema),
     defaultValues: {
       about: state.form.personalInfo.about || '',
@@ -24,6 +26,7 @@ function PersonalnfoForm() {
       dob: state.form.personalInfo.dob ? new Date(state.form.personalInfo.dob) : undefined // Convert to Date
     }
   })
+  const today = format(new Date(), "yyyy-MM-dd"); // Get today's date in YYYY-MM-DD format
   const dispatch = useDispatch<AppDispatch>();
   function onSubmit(formData: PersonalInfoFormData) {
     try {
@@ -87,11 +90,16 @@ function PersonalnfoForm() {
         <div className="relative max-w-[416px] z-49">
           <input
             type="date"
-            value={state.form.personalInfo.dob
+            value={
+              state.form.personalInfo.dob && !showDate
               ? format(new Date(state.form.personalInfo.dob), "yyyy-MM-dd") // Ensure it's a Date
-              : ""
+              : showDate as string
             }
-            onChange={(e) => setValue('dob', new Date(e.target.value))}
+            onChange={(e:any) => {
+              setShowDate(e.target.value)
+              setValue('dob', new Date(e.target.value))
+            }}
+            max={today}
             placeholder="date"
             className="px-4 text-[14px] text-gray-400 h-[52px] rounded-[10px] w-full border  border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
           />
