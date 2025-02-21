@@ -3,7 +3,7 @@ import PersonalnfoForm from '../components/Forms/auth/PersonalnfoForm'
 function PersonalInfo() {
   return (
     <main className="flex-col justify-center items-center w-full min-h-full">
-      <div className="py-3 w-full">
+      <div className="py-3 w-full z-49">
         <h1 className="poppins-bold text-[24px] text-center leading-[24px]">
           Personal information
         </h1>

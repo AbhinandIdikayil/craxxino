@@ -18,9 +18,15 @@ export const accountSchema = z.object({
 
 
 export const personalInfoSchema = z.object({
+    title: z.enum(["Mr", "Mrs"], {
+        required_error: "Please select a title", 
+        message:'Required'
+    }),
     fullName: z.string().min(1, 'Full name is required'),
     address: z.string().min(1, 'Address is required'),
-    about: z.string().min(1, 'About is required')
+    about: z.string().min(1, 'About is required'),
+    addressDuration: z.string().min(1, 'Duration is required'),
+    date: z.date({ required_error: 'Date is required' })
 });
 
 
@@ -32,5 +38,5 @@ export const financialInfoSchema = z.object({
 
 
 export type AccountFormData = z.infer<typeof accountSchema>;
-export type PersonalInfoFormData  = z.infer<typeof personalInfoSchema>;
-export type FinancialInfoFormData  = z.infer<typeof financialInfoSchema>;
+export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
+export type FinancialInfoFormData = z.infer<typeof financialInfoSchema>;

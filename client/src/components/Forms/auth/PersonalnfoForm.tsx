@@ -1,83 +1,143 @@
-import { useState } from 'react';
 import info from '../../../assets/info.svg'
 import Dropdown from '../../Dropdown/Dropdown';
+import { useForm, Controller } from 'react-hook-form';
+import { PersonalInfoFormData, personalInfoSchema } from '../../../utils/validation/schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../store/srote';
+import { setCurrentStep, setPersonalInfo } from '../../../store/userSlice';
 
 function PersonalnfoForm() {
-  const [date, setDate] = useState('');
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
   const options = ['Mr', 'Mrs'];
-
-
+  const { control, register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<PersonalInfoFormData>({
+    resolver: zodResolver(personalInfoSchema)
+  })
+  const dispatch = useDispatch<AppDispatch>();
+  function onSubmit(formData: PersonalInfoFormData) {
+    try {
+      dispatch(setPersonalInfo(formData));
+      dispatch(setCurrentStep(2));
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
-    <div className="flex items-center justify-center w-full overflow-y-hidden">
-      <form action=""
+    <div className="flex items-center justify-center w-full ">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-[416px] space-y-2.5 w-full max-md:px-5 poppins-regular "
       >
-        <div className='flex max-w-[416px] gap-2.5 h-[52px] '>
+        <div className='flex relative max-w-[416px] gap-2.5 h-[52px] '>
 
-          <Dropdown className='w-1/5' options={options} selected={selectedOption} setSelected={setSelectedOption} />
+          {/* <Dropdown className='w-1/5' options={options} selected={selectedOption} setSelected={setSelectedOption} /> */}
+          <Controller
+            name="title" // Match this with your schema
+            control={control}
+            defaultValue={undefined} // Set initial value
+            render={({ field }) => (
+              <Dropdown
+                className="w-1/5"
+                options={options}
+                selected={field.value} // Connect field value to selected
+                setSelected={field.onChange} // Connect onChange handler
+              />
+            )}
+          />
 
-          <div className="relative w-4/5 z-50">
+          {
+            errors.title && (
+              <span className="poppins-regular absolute left-0 ml-1 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                {errors.title.message}
+              </span>
+            )
+          }
+
+          <div style={{ zIndex: 99 }} className="relative w-4/5">
             <input
               type="text"
-              // required
+              placeholder='Full name'
+              {...register('fullName')}
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none " // Added peer class
             />
-            <label className="poppins-regular absolute left-0 px-4 text-black opacity-40 text-[14px] h-[30px] leading-[52px]">
-              Name
-            </label>
-          </div>
 
+            {
+              errors.fullName && (
+                <span className="poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                  {errors.fullName.message}
+                </span>
+              )
+            }
+
+          </div>
         </div>
 
         <div className="relative max-w-[416px] z-49">
           <input
             type="date"
-            value={date}
-            required
-            placeholder="Date"
-            className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border opacity-40 border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
+            onChange={(e) => setValue('date', new Date(e.target.value))}
+            placeholder="date"
+            className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border  border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
           />
-          {/* <label className="poppins-regular absolute left-0 px-4 text-black text-[14px] h-[30px] leading-[52px] pointer-events-none transition-all duration-300 ease-in-out  peer-focus:translate-y-[-80%] peer-focus:scale-[0.9] peer-focus:ml-[1.3em] peer-focus:px-2 peer-focus:text-[#0075FF]  peer-focus:top-0 peer-focus:bg-white peer-valid:translate-y-[-80%] peer-valid:scale-[0.9] peer-valid:ml-[1.3em] peer-valid:px-1 peer-valid:bg-white">
-            Date of birth
-          </label> */}
+          {
+            errors.date && (
+              <span className="poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                {errors.date.message}
+              </span>
+            )
+          }
         </div>
-
 
         <div className="relative max-w-[416px] z-48">
           <input
             type="text"
-            required
+            {...register('address')}
+            placeholder='Cureent address'
             autoComplete="off"
             className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
           />
-          <label className="poppins-regular absolute left-0 px-4 text-black opacity-40 text-[14px] h-[30px] leading-[52px] ">
-            Current address
-          </label>
-        </div>
 
+          {
+            errors.address && (
+              <span className="poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                {errors.address.message}
+              </span>
+            )
+          }
+        </div>
 
         <div className="relative max-w-[416px] z-47">
           <input
             type="text"
-            required
             autoComplete="off"
+            placeholder='How long you lived at this address'
+            {...register('addressDuration')}
             className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
           />
-          <label className="poppins-regular absolute left-0 px-4 text-black opacity-40 text-[14px] h-[30px] leading-[52px] ">
-            How long you lived at this address
-          </label>
+
+          {
+            errors.addressDuration && (
+              <span className="poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                {errors.addressDuration.message}
+              </span>
+            )
+          }
         </div>
 
-
-
         <div className="relative max-w-[416px] z-47 ">
+          {
+            errors.about && (
+              <span className="z-50 poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
+                {errors.about.message}
+              </span>
+            )
+          }
           <textarea
+            onChange={(e) => setValue('about', e.target.value)}
             placeholder="Tell us a bit about yourself (what are you like as a person, do you have any hobbies, etc.)"
             name=""
             id=""
-            className='text-black opacity-40 leading-[16px] px-4 py-3 w-full h-[80px]  border-gray-300 rounded-lg focus:outline-none border focus:ring-2 focus:ring-blue-500 transition-border-color duration-300 ease-in-out box-border '
+            className='text-black  leading-[16px] px-4 py-3 w-full h-[80px]  border-gray-300 rounded-lg focus:outline-none border focus:ring-2 focus:ring-blue-500 transition-border-color duration-300 ease-in-out box-border '
           />
           <div className='p-0 max-w-[416px] flex items-baseline justify-baseline gap-1'>
             <img src={info} alt="" />
@@ -86,10 +146,18 @@ function PersonalnfoForm() {
           </div>
         </div>
 
+        {
+          isSubmitting ? (
+            <button type='submit' className='poppins-semibold flex justify-center items-center text-white max-w-[416px] w-full bg-[#0075FF] h-[52px] rounded-[10px]'>
+              <Loader className='animate-spin' />
+            </button>
+          ) : (
+            <button type='submit' className='poppins-semibold flex justify-center items-center text-white max-w-[416px] w-full bg-[#0075FF] h-[52px] rounded-[10px]'>
+              Save and continue
+            </button>
+          )
+        }
 
-        <button className='poppins-semibold text-white max-w-[416px] w-full bg-[#0075FF] h-[52px] rounded-[10px]'>
-          Save and continue
-        </button>
       </form>
     </div>
   )

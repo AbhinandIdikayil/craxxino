@@ -1,18 +1,29 @@
 import { useState } from "react"
 import Dropdown from "../../Dropdown/Dropdown"
+import { useForm } from "react-hook-form";
+import { FinancialInfoFormData, financialInfoSchema } from "../../../utils/validation/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function FinancialInfoForm() {
   const options = ['Employed', 'Unemployed']
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const { register, handleSubmit, formState: { errors } } = useForm<FinancialInfoFormData>({
+    resolver: zodResolver(financialInfoSchema)
+  });
+
+  function onSubmit() {
+
+  }
+
   return (
     <div className="flex items-center justify-center w-full overflow-y-hidden">
-      <form action=""
+      <form
+        onSubmit={handleSubmit(onSubmit)}
         className="max-w-[416px] space-y-2.5 w-full max-md:px-5 poppins-regular "
       >
         <div className='flex max-w-[416px] gap-2.5 h-[52px] '>
 
           <Dropdown className='w-full' options={options} selected={selectedOption} setSelected={setSelectedOption} />
-
 
         </div>
 
@@ -23,6 +34,7 @@ function FinancialInfoForm() {
             type="text"
             required
             autoComplete="off"
+            // {...register('')}
             className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
           />
           <label className="poppins-regular absolute left-0 px-4 text-black opacity-40 text-[14px] h-[30px] leading-[52px] ">

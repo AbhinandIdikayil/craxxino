@@ -41,11 +41,11 @@ const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setAccountInfo: (state, {payload}) => {
+        setAccountInfo: (state, { payload }) => {
             state.form.id = payload
         },
-        setPersonalInfo: (state, action) => {
-            state.form.personalInfo = action.payload;
+        setPersonalInfo: (state, { payload }) => {
+            state.form.personalInfo = payload;
         },
         setFinancialInfo: (state, action) => {
             state.form.financialInfo = action.payload;
