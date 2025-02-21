@@ -153,7 +153,7 @@ function PersonalnfoForm() {
             placeholder="Tell us a bit about yourself (what are you like as a person, do you have any hobbies, etc.)"
             name=""
             id=""
-            value={state.form.personalInfo.about || ''}
+            defaultValue={state.form.personalInfo.about ? state.form.personalInfo.about : ''}
             className='text-gray-400  leading-[16px] px-4 py-3 w-full h-[80px]  border-gray-300 rounded-lg focus:outline-none border focus:ring-2 focus:ring-blue-500 transition-border-color duration-300 ease-in-out box-border '
           />
           <div className='p-0 max-w-[416px] flex items-baseline justify-baseline gap-1'>
