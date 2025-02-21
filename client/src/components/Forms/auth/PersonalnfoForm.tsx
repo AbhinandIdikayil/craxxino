@@ -49,7 +49,7 @@ function PersonalnfoForm() {
             defaultValue={undefined} // Set initial value
             render={({ field }) => (
               <Dropdown
-                className="w-1/5"
+                className="w-1/5 "
                 options={options}
                 selected={field.value} // Connect field value to selected
                 setSelected={field.onChange} // Connect onChange handler
@@ -70,7 +70,7 @@ function PersonalnfoForm() {
               type="text"
               placeholder='Full name'
               {...register('fullName')}
-              className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none " // Added peer class
+              className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border text-gray-400 border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none " // Added peer class
             />
 
             {
@@ -93,7 +93,7 @@ function PersonalnfoForm() {
             }
             onChange={(e) => setValue('dob', new Date(e.target.value))}
             placeholder="date"
-            className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border  border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
+            className="px-4 text-[14px] text-gray-400 h-[52px] rounded-[10px] w-full border  border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
           />
           {
             errors.dob && (
@@ -110,7 +110,7 @@ function PersonalnfoForm() {
             {...register('address')}
             placeholder='Cureent address'
             autoComplete="off"
-            className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
+            className="px-4 text-[14px] text-gray-400 h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
           />
 
           {
@@ -128,7 +128,7 @@ function PersonalnfoForm() {
             autoComplete="off"
             placeholder='How long you lived at this address'
             {...register('addressDuration')}
-            className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
+            className="px-4 text-[14px] text-gray-400 h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
           />
 
           {
@@ -153,7 +153,8 @@ function PersonalnfoForm() {
             placeholder="Tell us a bit about yourself (what are you like as a person, do you have any hobbies, etc.)"
             name=""
             id=""
-            className='text-black  leading-[16px] px-4 py-3 w-full h-[80px]  border-gray-300 rounded-lg focus:outline-none border focus:ring-2 focus:ring-blue-500 transition-border-color duration-300 ease-in-out box-border '
+            value={state.form.personalInfo.about || ''}
+            className='text-gray-400  leading-[16px] px-4 py-3 w-full h-[80px]  border-gray-300 rounded-lg focus:outline-none border focus:ring-2 focus:ring-blue-500 transition-border-color duration-300 ease-in-out box-border '
           />
           <div className='p-0 max-w-[416px] flex items-baseline justify-baseline gap-1'>
             <img src={info} alt="" />
