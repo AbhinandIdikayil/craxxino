@@ -4,20 +4,20 @@ import { AppDispatch } from '../../../store/srote'
 import { useForm } from 'react-hook-form';
 import { AccountFormData, accountSchema } from '../../../utils/validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-// import { useState } from 'react';
+import { useState } from 'react';
 import { AXIOS_INSTANCE } from '../../../constants/axios';
 import { setAccountInfo, setCurrentStep } from '../../../store/userSlice';
 import { AxiosError } from 'axios';
 import { Loader } from 'lucide-react';
 
 function CreateAccountForm() {
-  const dispath = useDispatch<AppDispatch>();
-  // const [showPassword, setShowPassword] = useState<{
-  //   password: boolean,
-  //   confirmPassword: boolean
-  // }>({ password: false, confirmPassword: false })
+  const dispatch = useDispatch<AppDispatch>();
+  const [showPassword, setShowPassword] = useState<{
+    password: boolean,
+    confirmPassword: boolean
+  }>({ password: false, confirmPassword: false })
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AccountFormData>({
+  const { register, handleSubmit, setError, formState: { errors, isSubmitting } } = useForm<AccountFormData>({
     resolver: zodResolver(accountSchema)
   })
 
@@ -30,18 +30,23 @@ function CreateAccountForm() {
       }
       const { data } = await AXIOS_INSTANCE.post('/auth/account', form);
       console.log(data)
-      dispath(setAccountInfo(data.data))
-      dispath(setCurrentStep(1))
+      dispatch(setAccountInfo(data.data))
+      dispatch(setCurrentStep(1))
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log('Axios, axios----')
-        console.log(error)
+        if (typeof error.response?.data?.message == 'string' && error.response?.data?.message?.includes('Email')) {
+          console.log('email')
+          setError('email', {message:error.response?.data?.message});
+        }
+        if (typeof error.response?.data?.message == 'string' && error.response?.data?.message?.includes('number')) {
+          console.log('mobile number')
 
+          setError('mobileNumber', {message:error.response?.data?.message});
+        }
       }
       console.log(error)
     }
   }
-  console.log(errors)
   return (
     <>
       <div className="flex items-center justify-center">
