@@ -5,5 +5,5 @@ import { IUserInfoDoc } from "../models/userInfo";
 
 export interface IAuthService {
     createUser(data:IUser): Promise<UserDoc>
-    createUserInfo(data:IUserInfo): Promise<IUserInfoDoc>
+    createUserInfo(data:IUserInfo,userId: string): Promise<IUserInfoDoc>
 }

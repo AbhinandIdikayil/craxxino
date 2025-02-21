@@ -1,8 +1,14 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Schema, Types } from "mongoose"
 import { DB_enum } from "../constants/db";
 
+enum Title {
+    Mrs = 'Mrs',
+    Mr = 'Mr'
+}
 export interface IUserInfoDoc extends Document {
+    userId: Types.ObjectId,
     personalInfo: {
+        title: Title,
         fullName: string,
         dob: Date,
         address: string,
@@ -15,7 +21,16 @@ export interface IUserInfoDoc extends Document {
     }
 }
 const userInfoSchema = new Schema<IUserInfoDoc>({
+    userId: {
+        ref: DB_enum.USER_MODEL,
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+    },
     personalInfo: {
+        title: {
+            type: Object.values(Title),
+            required: true
+        },
         fullName: {
             required: true,
             type: String

@@ -24,7 +24,7 @@ export class AuthService implements IAuthService {
         }
         return this.userRepo.create(data)
     }
-    async createUserInfo(data: IUserInfo): Promise<IUserInfoDoc> {
-        return this.userInfoRepo.create(data)
+    async createUserInfo(data: IUserInfo, userId: string): Promise<IUserInfoDoc> {
+        return this.userInfoRepo.create(data, userId)
     }
 }

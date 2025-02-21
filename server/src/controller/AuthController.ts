@@ -49,7 +49,11 @@ export class AuthController {
                     formattedErrors,
                 );
             }
-            const data = await this.service.createUserInfo(value)
+            const { userId  } = req.query
+            if(!userId){
+                throw ErrorResponse.badRequest('userId is not provided')
+            }
+            const data = await this.service.createUserInfo(value,userId as string)
             return success(res, { message: 'User info created successfully', data })
         } catch (error) {
             next(error)

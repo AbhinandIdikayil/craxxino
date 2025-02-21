@@ -30,6 +30,7 @@ export const authFormValidator = Joi.object({
 
 export const userInfoFormValidator = Joi.object({
     personalInfo: Joi.object({
+        title: Joi.string().valid("Mr", "Mrs").required(),
         fullName: Joi
             .string()
             .required()

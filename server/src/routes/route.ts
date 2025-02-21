@@ -12,4 +12,4 @@ const authController = new AuthController(authService)
 
 router.route('/auth/account').post(authController.createAccount.bind(authController));
 
-router.route('/auth/info').post(authController.createAccount.bind(authController));
+router.route('/auth/info').post(authController.createUserInfo.bind(authController));

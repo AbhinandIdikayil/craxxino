@@ -11,5 +11,5 @@ export interface IUserRepo  {
 }
 
 export interface IUserInfoRepo {
-    create(data:IUserInfo): Promise<IUserInfoDoc>
+    create(data:IUserInfo, userId: string): Promise<IUserInfoDoc>
 }
