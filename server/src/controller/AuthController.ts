@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IAuthService } from "../interfaces/IService";
-import { authFormValidator } from "../utils/validation/authFormValidation";
+import { authFormValidator, userInfoFormValidator } from "../utils/validation/authFormValidation";
 import ErrorResponse from "../utils/errorResponse";
 import { success } from "../utils/success";
 
@@ -14,21 +14,43 @@ export class AuthController {
 
     async createAccount(req: Request, res: Response, next: NextFunction) {
         try {
+            console.log(req.body)
             const { value, error } = authFormValidator.validate(req.body, { abortEarly: false })
             console.log(error)
             if (error) {
                 const formattedErrors = error.details.map((err) => ({
                     message: err.message.replace(/["\\]/g, ''),
-                    field: err.path.join('.'), 
+                    field: err.path.join('.'),
                 }));
 
                 throw ErrorResponse.badRequest(
-                     formattedErrors,
+                    formattedErrors,
                 );
             }
             const user = await this.service.createUser(value);
 
-            return success(res, { message: 'User created successfully', data: user })
+            return success(res, { message: 'User created successfully', data: user._id })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async createUserInfo(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { value, error } = userInfoFormValidator.validate(req.body, { abortEarly: false })
+            if (error) {
+                console.log(error)
+                const formattedErrors = error?.details.map((err) => ({
+                    message: err.message.replace(/["\\]/g, ''),
+                    field: err.path.join('.'),
+                }));
+
+                throw ErrorResponse.badRequest(
+                    formattedErrors,
+                );
+            }
+            const data = await this.service.createUserInfo(value)
+            return success(res, { message: 'User info created successfully', data })
         } catch (error) {
             next(error)
         }

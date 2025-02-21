@@ -1,22 +1,11 @@
 import mongoose, { Document, Schema, Types } from 'mongoose'
 import { DB_enum } from '../constants/db';
-
+import bcrypt from 'bcryptjs'
 export interface UserDoc extends Document {
     _id: Types.ObjectId | string,
     email: string,
     password: string,
     mobileNumber: string,
-    personalInfo: {
-        fullName: string,
-        dob: Date,
-        address: string,
-        address_duration: string,
-        about: string
-    },
-    financialInfo: {
-        employmentStatus: string,
-        savingsOrInvestments: string
-    }
 }
 
 
@@ -29,40 +18,20 @@ const userSchema = new Schema<UserDoc>({
         required: true,
         type: String
     },
-    mobileNumber:{
+    mobileNumber: {
         type: String,
         required: true
     },
-    personalInfo: {
-        fullName: {
-            required: true,
-            type: String
-        },
-        mobile_number: {
-            required: true,
-            type: String
-        },
-        dob: {
-            required: true,
-            type: Date
-        },
-        address: {
-            required: true,
-            type: String
-        },
-        address_duration: {
-            required: true,
-            type: String
-        },
-        about: {
-            required: true,
-            type: String
-        },
-    },
-    financialInfo: {
-        employmentStatus: { type: String, required: true },
-        savingsOrInvestments: { type: String, required: true }
-    }
+
 }, { timestamps: true });
+
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next()
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
+})
 
 export const UserModel = mongoose.model<UserDoc>(DB_enum.USER_MODEL, userSchema);

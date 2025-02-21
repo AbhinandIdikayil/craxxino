@@ -26,6 +26,9 @@ export const authFormValidator = Joi.object({
             'string.pattern.base': 'Please enter a valid 10-digit mobile number.',
             'string.empty': 'Mobile number is required.'
         }),
+});
+
+export const userInfoFormValidator = Joi.object({
     personalInfo: Joi.object({
         fullName: Joi
             .string()
@@ -54,7 +57,7 @@ export const authFormValidator = Joi.object({
                 'string.min': 'Address should have at least 5 characters.',
                 'string.empty': 'Address is required.'
             }),
-        address_duration: Joi
+        addressDuration: Joi
             .string() // Or .number() if you want to store it as a number of years/months
             .required()
             .messages({
@@ -82,4 +85,4 @@ export const authFormValidator = Joi.object({
                 'string.empty': 'Savings/Investments info is required.'
             })
     }).required()
-});
+})

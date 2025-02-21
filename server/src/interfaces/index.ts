@@ -1,14 +1,17 @@
 
 
-export interface IUser  {
+export interface IUser {
     email: string,
     password: string,
-    mobile_number: string,
+    mobileNumber: string,
+}
+
+export interface IUserInfo {
     personalInfo: {
         fullName: string,
         dob: Date,
         address: string,
-        address_duration: string,
+        addressDuration: string,
         about: string
     },
     financialInfo: {
