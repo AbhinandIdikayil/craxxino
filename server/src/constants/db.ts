@@ -1,6 +1,6 @@
 
 
 export enum DB_enum {
-    USER_MODEL = "Users",
-    USER_INFO_MODEL = 'Users_infos'
+    USER_MODEL = "users",
+    USER_INFO_MODEL = 'users_infos'
 }

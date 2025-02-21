@@ -49,12 +49,25 @@ export class AuthController {
                     formattedErrors,
                 );
             }
-            const { userId  } = req.query
-            if(!userId){
+            const { userId } = req.query
+            if (!userId) {
                 throw ErrorResponse.badRequest('userId is not provided')
             }
-            const data = await this.service.createUserInfo(value,userId as string)
+            const data = await this.service.createUserInfo(value, userId as string)
             return success(res, { message: 'User info created successfully', data })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getUserInfo(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { id } = req.params
+            if (!id) {
+                throw ErrorResponse.badRequest('id is required')
+            }
+            const data = await this.service.getUserInformation(id)
+            return success(res, { message: 'Successfull', data })
         } catch (error) {
             next(error)
         }

@@ -8,6 +8,7 @@ export interface IUserRepo  {
     create(data:IUser): Promise<UserDoc>
     findByEmail(data:string): Promise<UserDoc | null>
     findByMobile(data: string): Promise<UserDoc | null>
+    getUser(id: string): Promise<any>
 }
 
 export interface IUserInfoRepo {

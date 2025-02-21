@@ -27,4 +27,11 @@ export class AuthService implements IAuthService {
     async createUserInfo(data: IUserInfo, userId: string): Promise<IUserInfoDoc> {
         return this.userInfoRepo.create(data, userId)
     }
+    async getUserInformation(id: string): Promise<any> {
+        const user =  await this.userRepo.getUser(id)
+        if(!user){
+            throw ErrorResponse.badRequest('User not found')
+        }
+        return user[0]
+    }
 }
