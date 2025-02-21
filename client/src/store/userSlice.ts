@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { string } from "zod";
 
 export interface IUser {
     form: {
-        email: string | null,
-        password: string | null,
-        mobile_number: string | null,
+        id: string | null,
         personalInfo: {
             fullName: string | null,
             dob: Date | null,
@@ -22,9 +21,7 @@ export interface IUser {
 
 const initialState: IUser = {
     form: {
-        email: '',
-        mobile_number: '',
-        password: '',
+        id: null,
         financialInfo: {
             employmentStatus: '',
             savingsOrInvestments: ''
@@ -37,17 +34,15 @@ const initialState: IUser = {
             address_duration: '',
         }
     },
-    currentStep: null
+    currentStep: 0
 };
 
 const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setAccountInfo: (state, action) => {
-            state.form.email = action.payload;
-            state.form.password = action.payload;
-            state.form.mobile_number = action.payload;
+        setAccountInfo: (state, {payload}) => {
+            state.form.id = payload
         },
         setPersonalInfo: (state, action) => {
             state.form.personalInfo = action.payload;
