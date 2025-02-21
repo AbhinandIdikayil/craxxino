@@ -26,14 +26,17 @@ export const personalInfoSchema = z.object({
     address: z.string().min(1, 'Address is required'),
     about: z.string().min(1, 'About is required'),
     addressDuration: z.string().min(1, 'Duration is required'),
-    date: z.date({ required_error: 'Date is required' })
+    dob: z.date({ required_error: 'Date is required' })
 });
 
 
 
 export const financialInfoSchema = z.object({
-    annualIncome: z.string().min(1, 'Annual income is required'),
-    occupation: z.string().min(1, 'Occupation is required')
+    employmentStatus:z.enum(["Employed", "Unemployed"], {
+        required_error: "Please select a title", 
+        message:'Required'
+    }),
+    savingsOrInvestments: z.string().min(1, 'Annual income is required'),
 });
 
 

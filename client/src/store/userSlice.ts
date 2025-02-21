@@ -1,18 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { string } from "zod";
-
+enum title {
+    Mr = 'Mr',
+    Mrs = 'Mrs',
+}
+enum Employed  {
+    Unemoployed = 'Unemoployed',
+    Emoployed = 'Emoployed'
+}
 export interface IUser {
     form: {
         id: string | null,
         personalInfo: {
+            title: title | null;
             fullName: string | null,
             dob: Date | null,
             address: string | null,
-            address_duration: string | null,
+            addressDuration: string | null,
             about: string | null
         },
         financialInfo: {
-            employmentStatus: string | null,
+            employmentStatus: Employed | null,
             savingsOrInvestments: string | null
         }
     },
@@ -23,15 +30,16 @@ const initialState: IUser = {
     form: {
         id: null,
         financialInfo: {
-            employmentStatus: '',
+            employmentStatus: null,
             savingsOrInvestments: ''
         },
         personalInfo: {
+            title: null,
             fullName: '',
             dob: null, // Fixed type issue
             about: '',
             address: '',
-            address_duration: '',
+            addressDuration: '',
         }
     },
     currentStep: 0

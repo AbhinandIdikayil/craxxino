@@ -4,14 +4,25 @@ import { useForm, Controller } from 'react-hook-form';
 import { PersonalInfoFormData, personalInfoSchema } from '../../../utils/validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader } from 'lucide-react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store/srote';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/srote';
 import { setCurrentStep, setPersonalInfo } from '../../../store/userSlice';
+import { format } from "date-fns";
+
 
 function PersonalnfoForm() {
   const options = ['Mr', 'Mrs'];
+  const state = useSelector((state: RootState) => state.user)
   const { control, register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm<PersonalInfoFormData>({
-    resolver: zodResolver(personalInfoSchema)
+    resolver: zodResolver(personalInfoSchema),
+    defaultValues: {
+      about: state.form.personalInfo.about || '',
+      address: state.form.personalInfo.address || '',
+      addressDuration: state.form.personalInfo.addressDuration || '',
+      fullName: state.form.personalInfo.fullName || '',
+      title: state.form.personalInfo.title || undefined,
+      dob: state.form.personalInfo.dob ? new Date(state.form.personalInfo.dob) : undefined // Convert to Date
+    }
   })
   const dispatch = useDispatch<AppDispatch>();
   function onSubmit(formData: PersonalInfoFormData) {
@@ -22,6 +33,7 @@ function PersonalnfoForm() {
       console.log(error)
     }
   }
+  // console.log(parseISO(state?.form?.personalInfo?.date), format(state.form.personalInfo.date, "yyyy-MM-dd"))
   return (
     <div className="flex items-center justify-center w-full ">
       <form
@@ -75,14 +87,18 @@ function PersonalnfoForm() {
         <div className="relative max-w-[416px] z-49">
           <input
             type="date"
-            onChange={(e) => setValue('date', new Date(e.target.value))}
+            value={state.form.personalInfo.dob
+              ? format(new Date(state.form.personalInfo.dob), "yyyy-MM-dd") // Ensure it's a Date
+              : ""
+            }
+            onChange={(e) => setValue('dob', new Date(e.target.value))}
             placeholder="date"
             className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border  border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer"
           />
           {
-            errors.date && (
+            errors.dob && (
               <span className="poppins-regular absolute left-0 ml-2 top-0 -translate-y-[60%] px-2 text-red-500  bg-white text-[12px] leading-[12px] ">
-                {errors.date.message}
+                {errors.dob.message}
               </span>
             )
           }

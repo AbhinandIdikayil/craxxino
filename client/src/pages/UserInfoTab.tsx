@@ -1,12 +1,12 @@
 import PersonalInfo from './PersonalInfo';
 import FinancialInfo from './FinancialInfo';
-import CreateAccount from './CreateAccount';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/srote';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store/srote';
 import { setCurrentStep } from '../store/userSlice';
 import { Navigate } from 'react-router-dom';
 
 function UserInfoTab() {
+  const dispath = useDispatch<AppDispatch>()
   const state = useSelector((state: RootState) => state.user)
   const totalPages = 2;
   const generatePageNumbers = () => {
@@ -23,13 +23,24 @@ function UserInfoTab() {
         return <PersonalInfo />;
       case 2:
         return <FinancialInfo />;
+      case 3:
+        return <Navigate to={'/user/' + state.form.id} />;
       default:
         return <Navigate to={'/create'} />;
     }
   };
 
   function onPageChange(page: number) {
-    setCurrentStep(page)
+    console.log('hii', page)
+
+    if (state.form.personalInfo.about &&
+      state.form.personalInfo.address &&
+      state.form.personalInfo.addressDuration &&
+      state.form.personalInfo.fullName
+    ) {
+      console.log('===')
+      dispath(setCurrentStep(page))
+    }
   }
 
   return (

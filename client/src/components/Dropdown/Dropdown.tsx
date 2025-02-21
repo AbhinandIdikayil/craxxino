@@ -36,11 +36,12 @@ function Dropdown({ options, className, selected, setSelected }: DropDownProps) 
     return (
         <div className={`relative ${className}`} ref={dropdownRef} >
             <button
+                type="button"
                 onClick={toggleDropdown}
-                className="h-full w-full px-4 py-2 text-left text-gray-700 bg-white border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-between"
+                className="h-full w-full px-4 py-2 text-left text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 flex items-center justify-between"
             >
-                <span className={'opacity-40 text-black'}>
-                    {selected || 'Mr'}
+                <span className={'opacity-40 poppins-regular text-black'}>
+                    {selected || ''}
                 </span>
                 <ChevronDown
                     size={16}
@@ -52,6 +53,7 @@ function Dropdown({ options, className, selected, setSelected }: DropDownProps) 
                 <div className="absolute z-50 w-full mt-1 bg-white border rounded-md shadow-lg">
                     {options.map((option) => (
                         <button
+                        type="button"
                             key={option}
                             onClick={() => handleSelect(option)}
                             className="w-full px-2 py-2 text-left text-gray-700 hover:bg-gray-100 focus:outline-none"
