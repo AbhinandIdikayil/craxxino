@@ -4,7 +4,7 @@ import { AppDispatch } from '../../../store/srote'
 import { useForm } from 'react-hook-form';
 import { AccountFormData, accountSchema } from '../../../utils/validation/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { AXIOS_INSTANCE } from '../../../constants/axios';
 import { setAccountInfo, setCurrentStep } from '../../../store/userSlice';
 import { AxiosError } from 'axios';
@@ -12,10 +12,10 @@ import { Loader } from 'lucide-react';
 
 function CreateAccountForm() {
   const dispath = useDispatch<AppDispatch>();
-  const [showPassword, setShowPassword] = useState<{
-    password: boolean,
-    confirmPassword: boolean
-  }>({ password: false, confirmPassword: false })
+  // const [showPassword, setShowPassword] = useState<{
+  //   password: boolean,
+  //   confirmPassword: boolean
+  // }>({ password: false, confirmPassword: false })
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<AccountFormData>({
     resolver: zodResolver(accountSchema)
