@@ -50,16 +50,23 @@ function Dropdown({ options, className, selected, setSelected }: DropDownProps) 
             </button>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 bg-white border rounded-md shadow-lg">
-                    {options.map((option) => (
-                        <button
-                        type="button"
-                            key={option}
-                            onClick={() => handleSelect(option)}
-                            className="w-full px-2 py-2 text-left text-gray-700 hover:bg-gray-100 focus:outline-none"
-                        >
-                            {option}
-                        </button>
+                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-400 rounded-md shadow-lg">
+                    {options.map((option, index: number) => (
+                        <>
+                            <button
+                                type="button"
+                                key={option}
+                                onClick={() => handleSelect(option)}
+                                className="w-full  px-4 py-2 text-left text-gray-400 hover:bg-gray-100 focus:outline-none"
+                            >
+                                {option}
+                            </button>
+                            {
+                                index !== options.length - 1 && (
+                                    <hr className="text-gray-400" />
+                                )
+                            }
+                        </>
                     ))}
                 </div>
             )}
