@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { AXIOS_INSTANCE } from '../../../constants/axios';
 import { setAccountInfo, setCurrentStep } from '../../../store/userSlice';
 import { AxiosError } from 'axios';
-import { Loader } from 'lucide-react';
+import { Eye, EyeOff, Loader } from 'lucide-react';
 
 function CreateAccountForm() {
   const dispatch = useDispatch<AppDispatch>();
@@ -36,16 +36,24 @@ function CreateAccountForm() {
       if (error instanceof AxiosError) {
         if (typeof error.response?.data?.message == 'string' && error.response?.data?.message?.includes('Email')) {
           console.log('email')
-          setError('email', {message:error.response?.data?.message});
+          setError('email', { message: error.response?.data?.message });
         }
         if (typeof error.response?.data?.message == 'string' && error.response?.data?.message?.includes('number')) {
           console.log('mobile number')
 
-          setError('mobileNumber', {message:error.response?.data?.message});
+          setError('mobileNumber', { message: error.response?.data?.message });
         }
       }
       console.log(error)
     }
+  }
+
+  function confirmPasswordEye() {
+    setShowPassword((prev) => ({ ...prev, confirmPassword: !prev.confirmPassword }))
+  }
+
+  function passwordEye() {
+    setShowPassword((prev) => ({ ...prev, password: !prev.password }))
   }
   return (
     <>
@@ -64,7 +72,6 @@ function CreateAccountForm() {
             <input
               type="text"
               required
-
               {...register('email')}
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
             />
@@ -78,7 +85,6 @@ function CreateAccountForm() {
                 )
               }
             </label>
-
           </div>
 
           <div className="relative  max-w-[416px] z-49">
@@ -109,12 +115,19 @@ function CreateAccountForm() {
 
           <div className="relative max-w-[416px] z-[47]">
             <input
-              type="text"
+              type={showPassword.password ? 'text' : 'password'}
               required
               {...register('password')}
               autoComplete="off"
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
             />
+            {
+              showPassword.password ? (
+                <Eye onClick={passwordEye} className='absolute right-3 top-3 text-gray-500' />
+              ) : (
+                <EyeOff onClick={passwordEye} className='absolute right-3 top-3 text-gray-500' />
+              )
+            }
             <label className="poppins-regular absolute left-0 px-4 text-gray-400  text-[14px] h-[52px] leading-[52px] pointer-events-none transition-all duration-300 ease-in-out peer-focus:opacity-100 peer-focus:translate-y-[-80%] peer-focus:scale-[0.9] peer-focus:ml-[1.3em] peer-focus:h-[30px] peer-focus:px-2 peer-focus:text-[#0075FF]  peer-focus:top-0 peer-focus:bg-white peer-valid:translate-y-[-80%] peer-valid:h-[30px] peer-valid:scale-[0.9] peer-valid:ml-[1.3em] peer-valid:px-1 peer-valid:bg-white">
               Create a password
               {
@@ -130,12 +143,20 @@ function CreateAccountForm() {
 
           <div className="relative max-w-[416px] z-[46]">
             <input
-              type="text"
+              type={showPassword.confirmPassword ? 'text' : 'password'}
               required
               {...register('confirmPassword')}
               autoComplete="off"
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
             />
+            {
+              showPassword.confirmPassword ? (
+                <Eye onClick={confirmPasswordEye} className='absolute right-3 top-3 text-gray-500' />
+              ) : (
+                <EyeOff onClick={confirmPasswordEye} className='absolute right-3 top-3 text-gray-500' />
+              )
+            }
+
             <label className="poppins-regular absolute left-0 px-4 text-gray-400  text-[14px] h-[52px] leading-[52px] pointer-events-none transition-all duration-300 ease-in-out peer-focus:opacity-100 peer-focus:translate-y-[-80%] peer-focus:scale-[0.9] peer-focus:ml-[1.3em] peer-focus:h-[30px] peer-focus:px-2 peer-focus:text-[#0075FF]  peer-focus:top-0 peer-focus:bg-white peer-valid:translate-y-[-80%] peer-valid:h-[30px] peer-valid:scale-[0.9] peer-valid:ml-[1.3em] peer-valid:px-1 peer-valid:bg-white">
               Confirm you password
               {
