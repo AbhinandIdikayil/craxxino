@@ -57,9 +57,9 @@ function CreateAccountForm() {
 
           <div className="relative max-w-[416px] z-50">
             <input
-              type="email"
-              required={true}
-              autoComplete="off"
+              type="text"
+              required
+
               {...register('email')}
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
             />
@@ -73,11 +73,13 @@ function CreateAccountForm() {
                 )
               }
             </label>
+
           </div>
 
           <div className="relative  max-w-[416px] z-49">
             <input
               type="text"
+              required
               {...register('mobileNumber')}
               autoComplete="off"
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
@@ -103,6 +105,7 @@ function CreateAccountForm() {
           <div className="relative max-w-[416px] z-[47]">
             <input
               type="text"
+              required
               {...register('password')}
               autoComplete="off"
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
@@ -123,6 +126,7 @@ function CreateAccountForm() {
           <div className="relative max-w-[416px] z-[46]">
             <input
               type="text"
+              required
               {...register('confirmPassword')}
               autoComplete="off"
               className="px-4 text-[14px] h-[52px] rounded-[10px] w-full border border-[#0000001A] focus-within:border-[#0075FF] focus-within:outline-none peer" // Added peer class
@@ -157,7 +161,7 @@ function CreateAccountForm() {
               </button>
             )
           }
-    
+
           <p className='max-w-[416px] space-y-0 text-[14px] leading-[16px] text-black opacity-40'>
             By clicking ‘Create your account’, you are agreeing to our Terms & Conditions and Privacy Policy.
           </p>
